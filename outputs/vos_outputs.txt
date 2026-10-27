@@ -1,0 +1,233 @@
+=== set paginate false
+set paginate false
+
+[ok][2026-10-27 07:58:04]
+
+admin@versa-cli> === show bgp neighbor brief | nomore
+show bgp neighbor brief | nomore
+
+routing-instance: CORE
+
+Neighbor        V  MsgRcvd   MsgSent    Uptime     State/PfxRcd  PfxSent AS
+
+1.1.1.1         4  137       129        00:51:37   17            4       65001
+
+10.2.35.1       4  119       120        00:51:37   2             2       65002
+
+[ok][2026-10-27 07:58:15]
+
+admin@versa-cli> === show interfaces brief | nomore
+show interfaces brief | nomore
+
+NAME         MAC                OPER  ADMIN  TENANT  VRF     IP                          
+
+-----------------------------------------------------------------------------------------
+
+eth-0/0      52:54:00:cd:63:8a  up    up     0       global  <mgmt-ip>/16            
+
+                                                             fe80::5054:ff:fecd:638a/64  
+
+lo0          n/a                up    up     -       -                                   
+
+lo0.0        n/a                up    up     1       CORE    5.5.5.5/32                  
+
+vni-0/0      52:54:00:44:f7:82  up    up     -       -                                   
+
+vni-0/0.100  52:54:00:44:f7:82  up    up     1       RED     192.168.105.1/24            
+
+vni-0/1      52:54:00:9a:92:65  up    up     -       -                                   
+
+vni-0/1.0    52:54:00:9a:92:65  up    up     1       CORE    10.2.35.2/30                
+
+vni-0/2      52:54:00:10:39:4e  up    up     -       -                                   
+
+vni-0/2.106  52:54:00:10:39:4e  up    up     1       EVI106                              
+
+vni-0/3      52:54:00:61:1a:6b  up    up     -       -                                   
+
+vni-0/3.0    52:54:00:61:1a:6b  up    up     1       RED     192.168.107.1/24            
+
+vni-0/4      52:54:00:59:e6:e7  down  down   -       -                                   
+
+vni-0/5      52:54:00:b1:ec:81  down  down   -       -                                   
+
+vni-0/6      52:54:00:db:9a:e5  down  down   -       -                                   
+
+[ok][2026-10-27 07:58:25]
+
+admin@versa-cli> === show route routing-instance CORE | nomore
+show route routing-instance CORE | nomore
+
+Routes for Routing instance : CORE  AFI: ipv4  SAFI: unicast
+
+Codes: E1 - OSPF external type 1, E2 - OSPF external type 2
+
+IA - inter area, iA - intra area,
+
+L1 - IS-IS level-1, L2 - IS-IS level-2
+
+N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+
+RTI - Learnt from another routing-instance
+
+SUMM - SUMMARY/AGGREGATE route
+
++ - Active Route
+
+Prot   Type  Dest Address/Mask   Next-hop        Age      Interface name     Nexthop name
+
+----   ----  -----------------   --------        ---      --------------    ---------------
+
+BGP    N/A  +1.1.1.1/32          0.0.0.0         00:51:57 Indirect                                                                                                   
+
+BGP    N/A  +4.4.4.4/32          0.0.0.0         00:51:57 Indirect                                                                                                   
+
+local  N/A  +5.5.5.5/32          0.0.0.0         00:52:07 directly connected                                                                                         
+
+conn   N/A  +10.2.35.0/30        0.0.0.0         00:52:01 vni-0/1.0                                                                                                  
+
+local  N/A  +10.2.35.2/32        0.0.0.0         00:52:01 directly connected                                                                                         
+
+Routes for Routing instance : CORE  AFI: ipv6  SAFI: unicast
+
+[ok][2026-10-27 07:58:36]
+
+admin@versa-cli> === show route routing-instance RED | nomore
+show route routing-instance RED | nomore
+
+Routes for Routing instance : RED  AFI: ipv4  SAFI: unicast
+
+Codes: E1 - OSPF external type 1, E2 - OSPF external type 2
+
+IA - inter area, iA - intra area,
+
+L1 - IS-IS level-1, L2 - IS-IS level-2
+
+N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+
+RTI - Learnt from another routing-instance
+
+SUMM - SUMMARY/AGGREGATE route
+
++ - Active Route
+
+Prot   Type  Dest Address/Mask   Next-hop        Age      Interface name     Nexthop name
+
+----   ----  -----------------   --------        ---      --------------    ---------------
+
+BGP    N/A  +172.16.30.0/24      1.1.1.1         00:41:06 Indirect                                                                                                   
+
+BGP    N/A  +172.16.40.0/24      1.1.1.1         00:41:06 Indirect                                                                                                   
+
+BGP    N/A  +172.16.100.0/24     1.1.1.1         00:41:06 Indirect                                                                                                   
+
+BGP    N/A  +192.168.101.1/32    1.1.1.1         00:41:05 Indirect                                                                                                   
+
+BGP    N/A  +192.168.101.2/32    1.1.1.1         00:41:05 Indirect                                                                                                   
+
+conn   N/A  +192.168.105.0/24    0.0.0.0         00:04:14 vni-0/0.100                                                                                                
+
+local  N/A  +192.168.105.1/32    0.0.0.0         00:04:14 directly connected                                                                                         
+
+conn   N/A  +192.168.107.0/24    0.0.0.0         00:41:04 vni-0/3.0                                                                                                  
+
+local  N/A  +192.168.107.1/32    0.0.0.0         00:41:04 directly connected                                                                                         
+
+Routes for Routing instance : RED  AFI: ipv6  SAFI: unicast
+
+[ok][2026-10-27 07:58:46]
+
+admin@versa-cli> === show route table l3vpn.ipv4.unicast routing-instance CORE receive-protocol bgp 192.168.101.1/32 exact | nomore
+show route table l3vpn.ipv4.unicast routing-instance CORE receive-protocol bgp 192.168.101.1/32 exact | nomore
+
+Routes for Routing instance : CORE  AFI: ipv4  SAFI: unicast
+
+Routing entry for 192.168.101.1/32
+
+   Peer Address       : 1.1.1.1
+
+   Route Distinguisher: 1.1.1.1:1
+
+   Next-hop           : 1.1.1.1
+
+   VPN Label          : 1005
+
+   Local Preference   : 100
+
+   AS Path            : 65001
+
+   AS Path(. notation): 65001
+
+   Origin             : Incomplete
+
+   MED                : 0
+
+   Community          : N/A
+
+   Extended community : target:65000:1
+
+   Scalable group tag : 0
+
+   Preference         : Default
+
+   Weight             : 0
+
+   Best               : true
+
+      
+
+[ok][2026-10-27 07:58:57]
+
+admin@versa-cli> === show route table l3vpn.ipv4.unicast routing-instance CORE advertising-protocol bgp 192.168.107.0/24 exact | nomore
+show route table l3vpn.ipv4.unicast routing-instance CORE advertising-protocol bgp 192.168.107.0/24 exact | nomore
+
+Routes for Routing instance : CORE  AFI: ipv4  SAFI: unicast
+
+Routing entry for 192.168.107.0/24
+
+   Peer Address       : 1.1.1.1
+
+   Route Distinguisher: 5.5.5.5:1
+
+   Next-hop           : 5.5.5.5
+
+   VPN Label          : 24706
+
+   Local Preference   : 0
+
+   AS Path            : 65003
+
+   AS Path(. notation): 65003
+
+   Origin             : Incomplete
+
+   MED                : 0
+
+   Community          : N/A
+
+   Extended community : target:65000:1 target:65000:30 target:65000:40 target:65000:110
+
+      
+
+[ok][2026-10-27 07:59:08]
+
+admin@versa-cli> === ping 10.2.35.1 routing-instance CORE count 3
+ping 10.2.35.1 routing-instance CORE count 3
+
+PING 10.2.35.1 (10.2.35.1) 56(84) bytes of data.
+
+64 bytes from 10.2.35.1: icmp_seq=1 ttl=255 time=1.94 ms
+
+64 bytes from 10.2.35.1: icmp_seq=2 ttl=255 time=1.67 ms
+
+64 bytes from 10.2.35.1: icmp_seq=3 ttl=255 time=1.98 ms
+
+--- 10.2.35.1 ping statistics ---
+
+3 packets transmitted, 3 received, 0% packet loss, time 2002ms
+
+rtt min/avg/max/mdev = 1.672/1.865/1.983/0.146 ms
+
+[ok][2026-10-27 07:59:17]
+
+admin@versa-cli>

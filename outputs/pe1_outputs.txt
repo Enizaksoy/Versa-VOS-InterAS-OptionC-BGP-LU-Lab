@@ -1,0 +1,52 @@
+PE1#
+terminal length 0
+PE1#
+show bgp vpnv4 unicast summary | begin Neighbor
+                           ^
+% Invalid input detected at '^' marker.
+PE1#
+show bgp ipv4 unicast | begin Network
+     Network          Next Hop            Metric LocPrf Weight Path
+ r>i  1.1.1.1/32       2.2.2.2                 20    100      0 i
+ *>i  4.4.4.4/32       2.2.2.2                 20    100      0 65002 i
+ *>i  5.5.5.5/32       2.2.2.2                  0    100      0 65002 65003 ?
+ *>i  10.2.35.0/30     2.2.2.2                  0    100      0 65002 65003 ?
+PE1#
+show bgp vpnv4 unicast vrf RED | begin Network
+     Network          Next Hop            Metric LocPrf Weight Path
+Route Distinguisher: 1.1.1.1:1 (default for vrf RED)
+ *>   192.168.101.1/32 0.0.0.0                  0         32768 ?
+ *>   192.168.101.2/32 4.4.4.4                  0             0 65002 ?
+ *>   192.168.105.0    5.5.5.5                                0 65003 ?
+ *>   192.168.107.0    5.5.5.5                                0 65003 ?
+PE1#
+show ip route vrf RED | begin Gateway
+Gateway of last resort is not set
+      192.168.101.0/32 is subnetted, 2 subnets
+C        192.168.101.1 is directly connected, Loopback101
+B        192.168.101.2 [20/0] via 4.4.4.4, 01:23:50
+B     192.168.105.0/24 [20/0] via 5.5.5.5, 00:01:07
+B     192.168.107.0/24 [20/0] via 5.5.5.5, 00:38:10
+PE1#
+show ip cef vrf RED 192.168.107.10 detail
+192.168.107.0/24, epoch 0, flags [rib defined all labels]
+  recursive via 5.5.5.5 label 24706
+    recursive via 2.2.2.2 label 2003
+      nexthop 10.1.12.2 GigabitEthernet2
+PE1#
+ping vrf RED 192.168.107.10 source 192.168.101.1 repeat 5
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.107.10, timeout is 2 seconds:
+Packet sent with a source address of 192.168.101.1 
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 4/5/9 ms
+PE1#
+traceroute vrf RED 192.168.107.10 source 192.168.101.1 numeric timeout 1 $vrf RED 192.168.107.10 source 192.168.101.1 numeric timeout 1 p         robe 1
+Type escape sequence to abort.
+Tracing the route to 192.168.107.10
+VRF info: (vrf in name/id, vrf out name/id)
+  1 10.1.12.2 [MPLS: Labels 2003/24706 Exp 0] 6 msec
+  2 10.0.23.2 [MPLS: Labels 3004/24706 Exp 0] 5 msec
+  3  * 
+  4 192.168.107.10 5 msec
+PE1#

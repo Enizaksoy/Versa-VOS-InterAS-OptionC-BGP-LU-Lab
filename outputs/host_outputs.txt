@@ -1,0 +1,32 @@
+host-c:~$ ip -4 addr show eth0 | grep inet; ip route
+    inet 192.168.107.10/24 scope global eth0
+default via 192.168.107.1 dev eth0
+192.168.107.0/24 dev eth0 scope link  src 192.168.107.10
+
+host-c:~$ ping -c 4 192.168.101.1
+PING 192.168.101.1 (192.168.101.1): 56 data bytes
+64 bytes from 192.168.101.1: seq=0 ttl=42 time=3.282 ms
+64 bytes from 192.168.101.1: seq=1 ttl=42 time=3.004 ms
+64 bytes from 192.168.101.1: seq=2 ttl=42 time=3.191 ms
+64 bytes from 192.168.101.1: seq=3 ttl=42 time=3.113 ms
+--- 192.168.101.1 ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max = 3.004/3.147/3.282 ms
+
+host-c:~$ ping -c 4 192.168.101.2
+PING 192.168.101.2 (192.168.101.2): 56 data bytes
+64 bytes from 192.168.101.2: seq=0 ttl=42 time=5.277 ms
+64 bytes from 192.168.101.2: seq=1 ttl=42 time=4.779 ms
+64 bytes from 192.168.101.2: seq=2 ttl=42 time=4.555 ms
+64 bytes from 192.168.101.2: seq=3 ttl=42 time=4.494 ms
+--- 192.168.101.2 ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max = 4.494/4.776/5.277 ms
+
+host-c:~$ traceroute -n -w 1 -q 1 192.168.101.1
+traceroute to 192.168.101.1 (192.168.101.1), 30 hops max, 46 byte packets
+ 1  192.168.107.1  0.923 ms
+ 2  10.2.35.1  7.075 ms
+ 3  10.0.23.1  4.568 ms
+ 4  192.168.101.1  71.877 ms
+host-c:~$

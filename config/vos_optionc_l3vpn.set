@@ -1,0 +1,65 @@
+set interfaces lo0 unit 0 family inet
+set interfaces lo0 unit 0 family inet address 5.5.5.5
+set interfaces vni-0/0 enable true
+set interfaces vni-0/0 unit 100 vlan-id 100
+set interfaces vni-0/0 unit 100 family
+set interfaces vni-0/0 unit 100 family inet
+set interfaces vni-0/0 unit 100 family inet address 192.168.105.1/24
+set interfaces vni-0/1 enable true
+set interfaces vni-0/1 unit 0 family
+set interfaces vni-0/1 unit 0 family inet
+set interfaces vni-0/1 unit 0 family inet address 10.2.35.2/30
+set interfaces vni-0/1 unit 0 family mpls
+set interfaces vni-0/2 enable true
+set interfaces vni-0/2 promiscuous true
+set interfaces vni-0/2 unit 106 family
+set interfaces vni-0/2 unit 106 family bridge
+set interfaces vni-0/2 unit 106 family bridge vlan-id 106
+set interfaces vni-0/2 unit 106 family bridge interface-mode access
+set routing-instances CORE instance-type virtual-router
+set routing-instances CORE policy-options redistribution-policy TO-LU term LO match protocol direct
+set routing-instances CORE policy-options redistribution-policy TO-LU term LO action accept
+set routing-instances CORE policy-options redistribute-to-bgp-labeled-unicast TO-LU
+set routing-instances CORE mpls-vpn-core
+set routing-instances CORE evpn-core
+set routing-instances CORE interfaces [ lo0.0 vni-0/1.0 ]
+set routing-instances CORE routing-options mpls-vpn-local-router-address 5.5.5.5
+set routing-instances CORE routing-options evpn-local-router-address 5.5.5.5
+set routing-instances CORE protocols bgp 1 router-id 5.5.5.5
+set routing-instances CORE protocols bgp 1 local-as as-number 65003
+set routing-instances CORE protocols bgp 1 group LU type external
+set routing-instances CORE protocols bgp 1 group LU family inet labeled-unicast
+set routing-instances CORE protocols bgp 1 group LU peer-as 65002
+set routing-instances CORE protocols bgp 1 group LU neighbor 10.2.35.1
+set routing-instances CORE protocols bgp 1 group VPN type external
+set routing-instances CORE protocols bgp 1 group VPN family inet-vpn unicast
+set routing-instances CORE protocols bgp 1 group VPN family l2vpn evpn
+set routing-instances CORE protocols bgp 1 group VPN peer-as 65001
+set routing-instances CORE protocols bgp 1 group VPN local-address 5.5.5.5
+set routing-instances CORE protocols bgp 1 group VPN neighbor 1.1.1.1
+set routing-instances EVI106 instance-type virtual-switch
+set routing-instances EVI106 bridge-domains
+set routing-instances EVI106 bridge-domains BD106 vlan-id 106
+set routing-instances EVI106 interfaces [ vni-0/2.106 ]
+set routing-instances EVI106 route-distinguisher 5.5.5.5:106
+set routing-instances EVI106 vrf-both-target target:65000:106
+set routing-instances EVI106 protocols evpn vlan-id-list [ 106 ]
+set routing-instances EVI106 protocols evpn encapsulation mpls
+set routing-instances EVI106 protocols evpn core-instance CORE
+set routing-instances RED instance-type vrf
+set routing-instances RED policy-options redistribution-policy DIRECT term T1 match protocol direct
+set routing-instances RED policy-options redistribution-policy DIRECT term T1 action accept
+set routing-instances RED policy-options redistribute-to-bgp DIRECT
+set routing-instances RED global-vrf-id 10
+set routing-instances RED announce-global-vrf-id-label true
+set routing-instances RED mpls-vpn-core-instance CORE
+set routing-instances RED route-distinguisher 5.5.5.5:1
+set routing-instances RED vrf-both-target target:65000:1
+set orgs org LAB appliance-owner
+set orgs org LAB available-routing-instances [ CORE EVI106 RED ]
+set orgs org LAB owned-routing-instances [ CORE EVI106 RED ]
+set interfaces vni-0/2 unit 200 vlan-id 200
+set interfaces vni-0/2 unit 200 family inet address 192.168.106.1/24
+set routing-instances RED interfaces [ vni-0/0.100 vni-0/2.200 ]
+set orgs org LAB traffic-identification using [ lo0.0 vni-0/0.100 vni-0/1.0 vni-0/2.106 vni-0/2.200 ]
+set orgs org-services LAB objects zones MPLS-ZONE interface-list [ lo0.0 vni-0/0.100 vni-0/1.0 vni-0/2.106 vni-0/2.200 ]

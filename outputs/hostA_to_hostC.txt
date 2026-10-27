@@ -1,0 +1,25 @@
+host-a:~$ ip -4 addr show eth0 | grep inet
+    inet 172.16.30.10/24 scope global eth0
+
+host-a:~$ ip route
+default via 172.16.30.1 dev eth0
+172.16.30.0/24 dev eth0 scope link  src 172.16.30.10
+
+host-a:~$ ping -c 4 192.168.107.10
+PING 192.168.107.10 (192.168.107.10): 56 data bytes
+64 bytes from 192.168.107.10: seq=0 ttl=42 time=3.185 ms
+64 bytes from 192.168.107.10: seq=1 ttl=42 time=3.763 ms
+64 bytes from 192.168.107.10: seq=2 ttl=42 time=3.404 ms
+64 bytes from 192.168.107.10: seq=3 ttl=42 time=3.378 ms
+--- 192.168.107.10 ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max = 3.185/3.432/3.763 ms
+
+host-a:~$ traceroute -n -w 1 -q 1 192.168.107.10
+traceroute to 192.168.107.10 (192.168.107.10), 30 hops max, 46 byte packets
+ 1  172.16.30.1  0.908 ms
+ 2  10.1.12.2  5.047 ms
+ 3  10.0.23.2  6.122 ms
+ 4  *
+ 5  192.168.107.10  3.474 ms
+host-a:~$

@@ -1,0 +1,45 @@
+host-c:~$ hostname
+host-c
+
+host-c:~$ ip -4 addr show eth0 | grep inet
+    inet 192.168.107.10/24 scope global eth0
+
+host-c:~$ ping -c 4 172.16.30.10
+PING 172.16.30.10 (172.16.30.10): 56 data bytes
+64 bytes from 172.16.30.10: seq=0 ttl=42 time=4.922 ms
+64 bytes from 172.16.30.10: seq=1 ttl=42 time=3.790 ms
+64 bytes from 172.16.30.10: seq=2 ttl=42 time=3.511 ms
+64 bytes from 172.16.30.10: seq=3 ttl=42 time=3.897 ms
+--- 172.16.30.10 ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max = 3.511/4.030/4.922 ms
+
+host-c:~$ ping -c 4 172.16.40.10
+PING 172.16.40.10 (172.16.40.10): 56 data bytes
+64 bytes from 172.16.40.10: seq=0 ttl=42 time=5.997 ms
+64 bytes from 172.16.40.10: seq=1 ttl=42 time=5.771 ms
+64 bytes from 172.16.40.10: seq=2 ttl=42 time=5.181 ms
+64 bytes from 172.16.40.10: seq=3 ttl=42 time=5.479 ms
+--- 172.16.40.10 ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss
+round-trip min/avg/max = 5.181/5.607/5.997 ms
+
+host-c:~$ traceroute -n -w 1 -q 1 172.16.30.10
+traceroute to 172.16.30.10 (172.16.30.10), 30 hops max, 46 byte packets
+ 1  192.168.107.1  0.972 ms
+ 2  10.2.35.1  6.192 ms
+ 3  10.0.23.1  5.768 ms
+ 4  172.16.30.1  8.026 ms
+ 5  172.16.30.10  3.005 ms
+
+host-c:~$ traceroute -n -w 1 -q 1 172.16.40.10
+traceroute to 172.16.40.10 (172.16.40.10), 30 hops max, 46 byte packets
+ 1  192.168.107.1  0.685 ms
+ 2  10.2.35.1  6.576 ms
+ 3  10.0.23.1  6.924 ms
+ 4  10.1.12.1  6.970 ms
+ 5  10.1.12.2  6.486 ms
+ 6  10.0.23.2  6.388 ms
+ 7  172.16.40.1  21.286 ms
+ 8  172.16.40.10  5.489 ms
+host-c:~$

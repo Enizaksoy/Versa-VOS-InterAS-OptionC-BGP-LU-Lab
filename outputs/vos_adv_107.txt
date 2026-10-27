@@ -1,0 +1,36 @@
+admin@versa-cli> show route table l3vpn.ipv4.unicast routing-instance CORE advertising-protocol bgp 192.168.107.0/24 exact | nomore
+Routes for Routing instance : CORE  AFI: ipv4  SAFI: unicast
+Routing entry for 192.168.107.0/24
+   Peer Address       : 1.1.1.1
+   Route Distinguisher: 5.5.5.5:1
+   Next-hop           : 5.5.5.5
+   VPN Label          : 24706
+   Local Preference   : 0
+   AS Path            : 65003
+   AS Path(. notation): 65003
+   Origin             : Incomplete
+   MED                : 0
+   Community          : N/A
+   Extended community : target:65000:1 target:65000:30 target:65000:40 target:65000:110
+[ok][2026-10-27 10:35:55]
+
+admin@versa-cli> show route table l3vpn.ipv4.unicast routing-instance CORE receive-protocol bgp 172.16.40.0/24 exact | nomore
+Routes for Routing instance : CORE  AFI: ipv4  SAFI: unicast
+Routing entry for 172.16.40.0/24
+   Peer Address       : 1.1.1.1
+   Route Distinguisher: 4.4.4.4:40
+   Next-hop           : 1.1.1.1
+   VPN Label          : 1012
+   Local Preference   : 100
+   AS Path            : 65001 65002
+   AS Path(. notation): 65001 65002
+   Origin             : Incomplete
+   MED                : 0
+   Community          : N/A
+   Extended community : target:65000:40
+   Scalable group tag : 0
+   Preference         : Default
+   Weight             : 0
+   Best               : true
+[ok][2026-10-27 10:36:05]
+admin@versa-cli>

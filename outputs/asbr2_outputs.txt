@@ -1,0 +1,46 @@
+ASBR2#
+terminal length 0
+ASBR2#
+show bgp ipv4 unicast summary | begin Neighbor
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+4.4.4.4         4        65002      96     102       13    0    0 01:26:11        0
+10.0.23.1       4        65001      97     100       13    0    0 01:26:18        1
+10.2.35.2       4        65003     117     117       13    0    0 00:50:27        2
+ASBR2#
+show bgp ipv4 unicast labels
+   Network          Next Hop      In label/Out label
+   1.1.1.1/32       10.0.23.1       3002/2000
+   4.4.4.4/32       10.2.34.2       3001/nolabel
+   5.5.5.5/32       10.2.35.2       3004/imp-null
+   10.2.35.0/30     10.2.35.2       3005/imp-null
+ASBR2#
+show mpls forwarding-table
+Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop    
+Label      Label      or Tunnel Id     Switched      interface              
+3000       Pop Label  10.0.23.1/32     0             Gi3        10.0.23.1   
+3001       Pop Label  4.4.4.4/32       283730        Gi2        10.2.34.2   
+3002       2000       1.1.1.1/32       327527        Gi3        10.0.23.1   
+3003       Pop Label  10.2.35.2/32     0             Gi1        10.2.35.2   
+3004       Pop Label  5.5.5.5/32       26304         Gi1        10.2.35.2   
+3005       Pop Label  10.2.35.0/30     0             aggregate  
+ASBR2#
+show ip route 5.5.5.5
+Routing entry for 5.5.5.5/32
+  Known via "bgp 65002", distance 20, metric 0
+  Tag 65003, type external
+  Last update from 10.2.35.2 00:50:57 ago
+  Routing Descriptor Blocks:
+  * 10.2.35.2, from 10.2.35.2, 00:50:57 ago
+      opaque_ptr 0x76B9A55ED9A8 
+      Route metric is 0, traffic share count is 1
+      AS Hops 1
+      Route tag 65003
+      MPLS label: implicit-null
+ASBR2#
+ping 5.5.5.5 source 3.3.3.3 repeat 3
+Type escape sequence to abort.
+Sending 3, 100-byte ICMP Echos to 5.5.5.5, timeout is 2 seconds:
+Packet sent with a source address of 3.3.3.3 
+...
+Success rate is 0 percent (0/3)
+ASBR2#
